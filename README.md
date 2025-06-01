@@ -1,7 +1,6 @@
 # 🚀 Ollama on Google Colab with Your Own Domain via Cloudflare! 🧠🌐
 
-[![Ollama Version](images/ollama-install.png)]
-(https://ollama.com/)
+[![Ollama Version](images/ollama-install.png)](https://ollama.com/)
 [![Cloudflare Tunnel](https://img.shields.io/badge/Cloudflare-Tunnel-orange)](https://www.cloudflare.com/products/tunnel/)
 [![Google Colab](https://img.shields.io/badge/Google%20Colab-F9AB00?logo=googlecolab)](https://colab.research.google.com/)
 
