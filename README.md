@@ -63,7 +63,7 @@ Follow these main stages: First, set up Cloudflare, then configure your Colab no
     * Select your tunnel from the list, then click `Configure`.
     * Go to the `Public Hostnames` tab and click `+ Add a public hostname`.
     * **Subdomain:** e.g., `ollama`
-    * **Domain:** Select your domain (e.g., `yogeshvibez.dpdns.org` from your image).
+    * **Domain:** Select your domain (e.g., `yogeshvibez.com` from your image).
     * **Service Type:** `HTTP`
     * **URL:** `localhost:11434` (Ollama's default port).
     * Click `Save hostname`.
@@ -118,7 +118,7 @@ Now, open a new Google Colab notebook and run the following cells:
 Once the Colab cells are running and Cloudflare is configured:
 
 1.  **Access via Your Custom Domain:**
-    Open a browser and go to the public hostname you set up (e.g., `https://ollama.yogeshvibez.dpdns.org`). You might see a simple "Ollama is running" message or a similar confirmation if you access the base URL (Ollama primarily serves API requests).
+    Open a browser and go to the public hostname you set up (e.g., `https://ollama.yogeshvibez.com`). You might see a simple "Ollama is running" message or a similar confirmation if you access the base URL (Ollama primarily serves API requests).
     ![Ollama running, accessed via custom domain in browser](images/ollama-run.png)
 
 2.  **Check Ollama Logs in Colab (for API requests):**
@@ -132,10 +132,10 @@ Once the Colab cells are running and Cloudflare is configured:
 
 Use `curl` from your local machine's terminal (or any API client) to send requests to your Ollama instance running on Colab, through your custom domain.
 
-Replace `https://ollama.yogeshvibez.dpdns.org` with your actual Cloudflare public hostname and `phi3` with your chosen model.
+Replace `https://ollama.yogeshvibez.com` with your actual Cloudflare public hostname and `phi3` with your chosen model.
 
 ```bash
-curl [https://ollama.yogeshvibez.dpdns.org/api/generate](https://ollama.yogeshvibez.dpdns.org/api/generate) -d '{
+curl [https://ollama.yogeshvibez.com/api/generate](https://ollama.yogeshvibez.dpdns.org/api/generate) -d '{
   "model": "phi3",
   "prompt": "Why is the sky blue? Explain it like I am five.",
   "stream": false
