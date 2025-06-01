@@ -3,6 +3,7 @@
 <h3>Click On Image To Open Website</h3>
 
 [![Ollama Version](images/ollama-install.png)](https://ollama.com/)
+<hr>
 [![Cloudflare Tunnel](images/cloudflare-tunnel-page.png)](https://www.cloudflare.com/products/tunnel/)
 [![Google Colab](https://img.shields.io/badge/Google%20Colab-F9AB00?logo=googlecolab)](https://colab.research.google.com/)
 
