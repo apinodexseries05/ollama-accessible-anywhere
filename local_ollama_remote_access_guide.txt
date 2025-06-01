@@ -1,0 +1,108 @@
+## 🏡 Guide: Ollama on Your Machine with Custom Domain 🌐
+
+**Goal:** Run an Ollama model 🧠 on your own Linux computer/server and access it from anywhere 💻 using your custom domain name.
+
+---
+
+### Part 1: Cloudflare Setup ☁️ (Do this first on the Cloudflare website)
+
+1.  **Sign up for Cloudflare:** 📝 If you don't have an account, create one.
+2.  **Add Your Domain:** ➕ Add your custom domain (e.g., `yourdomain.com`) to Cloudflare.
+3.  **Create a Tunnel:** 🚇
+    * Go to "Zero Trust" in your Cloudflare dashboard.
+    * Navigate to "Access" -> "Tunnels".
+    * Click "Create a tunnel".
+    * Choose "Cloudflared" as the connector type.
+    * Give your tunnel a name (e.g., `ollama-local`).
+    * Save the tunnel. On the next page, under "Install and run a connector", you'll see commands. **Copy the token part of the command or the full command for your OS.** 📋 You'll need this token soon.
+    * You don't need to configure public hostnames here yet; we can do it later.
+
+---
+
+### Part 2: Your Machine Setup 🖥️ (Linux)
+
+**Open a terminal on your Linux machine and follow these steps:**
+
+1.  **Install Ollama:** 📦
+    (This command downloads and runs the Ollama installation script)
+    ```bash
+    curl -fsSL [https://ollama.com/install.sh](https://ollama.com/install.sh) | sh
+    ```
+    * After installation, Ollama might start automatically. If not, you'll start it in a later step.
+
+2.  **Set Ollama to Accept External Requests (Optional but Recommended for Tunnel):** ⚙️
+    (This tells Ollama to listen on all network interfaces and accept requests from any origin. You might need to set these before starting the ollama service, or configure them in a systemd service file for persistence.)
+
+    For the current terminal session (do this before `ollama serve` if it's not already running):
+    ```bash
+    export OLLAMA_HOST=0.0.0.0
+    export OLLAMA_ORIGINS='*'
+    ```
+    *To make this permanent, you'd add these lines to your shell's profile file (e.g., `~/.bashrc` or `~/.zshrc`) and then run `source ~/.bashrc` or open a new terminal.*
+
+3.  **Start Ollama & Download a Model:** ▶️ + 📥
+    (If Ollama isn't already running as a service)
+    ```bash
+    ollama serve &
+    ```
+    (The `&` runs it in the background of your current terminal. For a more robust setup, consider setting up Ollama as a systemd service to run automatically.)
+
+    Then, pull a model (e.g., 'phi3'):
+    ```bash
+    ollama pull phi3
+    ```
+    * Wait for the model to download. ⏳
+    * You can check running models with: `ollama list`
+
+4.  **Install Cloudflared (for the tunnel):** 🔗
+    (These instructions are for Debian/Ubuntu. For other Linux distributions or OS, check Cloudflare's documentation: `https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/install-and-setup/installation/`)
+    ```bash
+    wget [https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb](https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb)
+    sudo dpkg -i cloudflared-linux-amd64.deb
+    cloudflared --version
+    ```
+
+5.  **Run the Cloudflared Tunnel:** 🚀
+    (Replace `YOUR_TUNNEL_TOKEN_HERE` with the token you got from Cloudflare in Part 1, Step 3. Sometimes the command provided by Cloudflare is `cloudflared tunnel run --token <YOUR_TOKEN> <TUNNEL_NAME_OR_ID>`)
+    ```bash
+    cloudflared tunnel --no-autoupdate run --token YOUR_TUNNEL_TOKEN_HERE
+    ```
+    OR, if Cloudflare gave you a full command like `cloudflared service install <TOKEN>`, that sets it up as a system service which is more robust. For a simple start, the `run --token` command is fine for testing.
+
+    * When this command runs, it will connect to Cloudflare. If you haven't set up a public hostname in Cloudflare yet, it might give you a `.trycloudflare.com` URL.
+    * **Important:** If you're not running Cloudflared as a service, keep this terminal window open! 🔔 If you close it, the tunnel stops.
+
+---
+
+### Part 3: Link Tunnel to Your Custom Domain on Cloudflare 🔗➡️🌐
+
+1.  Go back to your Cloudflare dashboard -> Zero Trust -> Access -> Tunnels.
+2.  Select your tunnel (e.g., `ollama-local`).
+3.  Go to the "Public Hostname" tab.
+4.  Click "Add a public hostname."
+    * **Subdomain:** Enter a subdomain (e.g., `ollama`).
+    * **Domain:** Select your domain (e.g., `yourdomain.com`). So it becomes `ollama.yourdomain.com`.
+    * **Service Type:** `HTTP`
+    * **URL:** `localhost:11434` (Ollama runs on port 11434 by default on your machine).
+    * Save. ✅
+
+    Now, `http://ollama.yourdomain.com` (or `https://` if Cloudflare proxy is enabled) should point to your Ollama instance running on your machine.
+
+---
+
+### Part 4: Access Ollama from Any Computer 💻➡️☁️
+
+* **If using the `.trycloudflare.com` URL (if provided by `cloudflared` directly):** Your URL will be something like `https://your-random-name.trycloudflare.com`
+* **If using your custom domain (after Part 3):** Your URL will be `http://ollama.yourdomain.com` (or `https://`)
+
+**Example: How to send a request using `curl` from any computer's terminal:** ⌨️
+
+Replace `YOUR_CLOUDFLARE_URL_OR_CUSTOM_DOMAIN` with the actual public URL.
+Replace `"phi3"` with the model you downloaded.
+
+```bash
+curl YOUR_CLOUDFLARE_URL_OR_CUSTOM_DOMAIN/api/generate -d '{
+  "model": "phi3",
+  "prompt": "What is the capital of France? 🇫🇷",
+  "stream": false
+}'

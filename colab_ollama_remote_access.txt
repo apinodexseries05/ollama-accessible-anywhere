@@ -1,0 +1,95 @@
+## 🚀 Guide: Ollama on Colab with Custom Domain 🌐
+
+**Goal:** Run an Ollama model 🧠 on Google Colab and access it from your computer 💻 using your own domain name.
+
+---
+
+### Part 1: Cloudflare Setup ☁️ (Do this first on the Cloudflare website)
+
+1.  **Sign up for Cloudflare:** 📝 If you don't have an account, create one.
+2.  **Add Your Domain:** ➕ Add your custom domain (e.g., `yourdomain.com`) to Cloudflare.
+3.  **Create a Tunnel:** 🚇
+    * Go to "Zero Trust" in your Cloudflare dashboard.
+    * Navigate to "Access" -> "Tunnels".
+    * Click "Create a tunnel".
+    * Choose "Cloudflared" as the connector type.
+    * Give your tunnel a name (e.g., `ollama-colab`).
+    * Save the tunnel. You'll get a token on the next page – **COPY THIS TOKEN!** 📋 You'll need it in Colab.
+    * You don't need to configure public hostnames here yet; we'll use the temporary one Cloudflared provides or you can set it up later to point to your tunnel.
+
+---
+
+### Part 2: Google Colab Setup 🛠️
+
+**Open a new Colab notebook 📒 and follow these steps:**
+
+1.  **Install Ollama:** 📦
+    ```python
+    !curl -fsSL [https://ollama.com/install.sh](https://ollama.com/install.sh) | sh
+    ```
+
+2.  **Set Ollama to Accept External Requests:** ⚙️
+    (Run these in a Colab cell. This tells Ollama to listen on all network interfaces and accept requests from any origin.)
+    ```python
+    import os
+    os.environ['OLLAMA_HOST'] = '0.0.0.0'
+    os.environ['OLLAMA_ORIGINS'] = '*'
+    ```
+
+3.  **Start Ollama & Download a Model:** ▶️ + 📥
+    (This command will start the Ollama server in the background and then download the 'phi3' model. You can change 'phi3' to another model like 'llama3' or 'mistral'. The `&` runs it in the background.)
+    ```python
+    !ollama serve & ollama pull phi3
+    ```
+    * Wait for the model to download. You'll see progress in the output. ⏳
+    * To check if Ollama is running, you can run: `!ollama list` (it might take a few seconds after starting).
+
+4.  **Install Cloudflared (for the tunnel):** 🔗
+    ```python
+    !wget [https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb](https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb)
+    !sudo dpkg -i cloudflared-linux-amd64.deb
+    !cloudflared --version
+    ```
+
+5.  **Run the Cloudflared Tunnel:** 🚀
+    (Replace `YOUR_TUNNEL_TOKEN_HERE` with the token you copied from Cloudflare in Part 1, Step 3.)
+    ```python
+    !cloudflared tunnel --no-autoupdate run --token YOUR_TUNNEL_TOKEN_HERE
+    ```
+    * When this command runs, it will output some URLs. Look for a URL ending with `.trycloudflare.com`. This is your temporary public address for Ollama. 🌍
+    * **Important:** Keep this Colab cell running! 🔔 If you stop it, the tunnel closes.
+
+---
+
+### Part 3: (Optional) Link Tunnel to Your Custom Domain on Cloudflare 🔗➡️🌐
+
+1.  Go back to your Cloudflare dashboard -> Zero Trust -> Access -> Tunnels.
+2.  Select your tunnel.
+3.  Go to the "Public Hostname" tab.
+4.  Click "Add a public hostname."
+    * **Subdomain:** Enter a subdomain (e.g., `ollama`).
+    * **Domain:** Select your domain (e.g., `yourdomain.com`). So it becomes `ollama.yourdomain.com`.
+    * **Service Type:** `HTTP`
+    * **URL:** `localhost:11434` (Ollama runs on port 11434 by default).
+    * Save. ✅
+
+    Now, `http://ollama.yourdomain.com` (or `https://` if Cloudflare enables it) should point to your Ollama instance in Colab.
+
+---
+
+### Part 4: Access Ollama from Your Computer 💻➡️☁️
+
+* **If using the `.trycloudflare.com` URL:** Your URL will be something like `https://your-random-name.trycloudflare.com`
+* **If using your custom domain (after Part 3):** Your URL will be `http://ollama.yourdomain.com` (or `https://`)
+
+**Example: How to send a request using `curl` from your computer's terminal:** ⌨️
+
+Replace `YOUR_CLOUDFLARE_URL` with either your `.trycloudflare.com` address or your custom domain.
+Replace `"phi3"` with the model you downloaded (e.g., `"dolphin3"` if you used that).
+
+```bash
+curl YOUR_CLOUDFLARE_URL/api/generate -d '{
+  "model": "phi3",
+  "prompt": "What is the capital of India? 🇮🇳",
+  "stream": false
+}'
