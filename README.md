@@ -3,9 +3,8 @@
 <h3>Click On Image To Open Website</h3>
 
 [![Ollama Version](images/ollama-install.png)](https://ollama.com/)
-<hr>
 [![Cloudflare Tunnel](images/cloudflare-tunnel-page.png)](https://www.cloudflare.com/products/tunnel/)
-[![Google Colab](https://img.shields.io/badge/Google%20Colab-F9AB00?logo=googlecolab)](https://colab.research.google.com/)
+[![ollama-image](images/ollama-run.png)](ollama.yogeshvibez.dpdns.org)
 
 Want to run powerful open-source AI models like Llama 3 or Phi-3 on a **free (or Pro) Google Colab instance** and access them from anywhere using your **own custom domain**? This guide is for you! We'll use Ollama for the AI models and Cloudflare Tunnel for secure, easy remote access.
 
