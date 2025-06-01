@@ -48,7 +48,7 @@ Follow these main stages: First, set up Cloudflare, then configure your Colab no
 3.  **Name Your Tunnel:**
     * Give your tunnel a descriptive name (e.g., `ollama-colab`).
     * Click `Save tunnel`.
-    ![Naming your Cloudflare Tunnel](images/image_d6b4a0.png)
+    ![Naming your Cloudflare Tunnel](images/tunnel-name.png)
     *(Focus on the "Tunnel name" field in the image above for this step)*
 
 4.  **Get Your Tunnel Token:**
@@ -57,7 +57,7 @@ Follow these main stages: First, set up Cloudflare, then configure your Colab no
 
 5.  **View Your Tunnel:**
     * Your newly created tunnel will now appear in the Tunnels dashboard.
-    ![Cloudflare Tunnels List](images/image_d6b8d8.png)
+    ![Cloudflare Tunnels List](images/view-tunnel-url.png)
 
 6.  **Configure a Public Hostname for the Tunnel:**
     * Select your tunnel from the list, then click `Configure`.
@@ -67,7 +67,7 @@ Follow these main stages: First, set up Cloudflare, then configure your Colab no
     * **Service Type:** `HTTP`
     * **URL:** `localhost:11434` (Ollama's default port).
     * Click `Save hostname`.
-    ![Configuring Public Hostname in Cloudflare](images/image_d6b423.png)
+    ![Configuring Public Hostname in Cloudflare](images/cloud-public-hostname.png)
 
 ### Part 2: Google Colab Setup (In Your Notebook 📒)
 
@@ -79,7 +79,7 @@ Now, open a new Google Colab notebook and run the following cells:
     !curl -fsSL [https://ollama.com/install.sh](https://ollama.com/install.sh) | sh
     ```
     *(This command is sourced from the official Ollama website as shown below)*
-    ![Ollama Download Page showing install command](images/image_d6b83b.png)
+    ![Ollama Download Page showing install command](images/ollama-install.png)
 
 2.  **Set Ollama Environment Variables:**
     To allow connections from the Cloudflare tunnel.
@@ -119,12 +119,12 @@ Once the Colab cells are running and Cloudflare is configured:
 
 1.  **Access via Your Custom Domain:**
     Open a browser and go to the public hostname you set up (e.g., `https://ollama.yogeshvibez.dpdns.org`). You might see a simple "Ollama is running" message or a similar confirmation if you access the base URL (Ollama primarily serves API requests).
-    ![Ollama running, accessed via custom domain in browser](images/image_d6b0dc.png)
+    ![Ollama running, accessed via custom domain in browser](images/ollama-run.png)
 
 2.  **Check Ollama Logs in Colab (for API requests):**
     When you send an API request (see next section), the output of the `!ollama serve & ...` cell in Colab should show activity, similar to the server logs indicating a request was processed.
     *(The image below shows a generic Ollama server log, which you would see parts of in your Colab output cell when a request like `/api/generate` is made)*
-    ![Ollama server log in Colab output showing API request](images/image_d6acf8.png)
+    ![Ollama server log in Colab output showing API request](images/ollama-ouput.png)
 
 ---
 
