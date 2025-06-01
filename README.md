@@ -1,7 +1,8 @@
 # 🚀 Ollama on Google Colab with Your Own Domain via Cloudflare! 🧠🌐
 
 [![Ollama Version](images/ollama-install.png)](https://ollama.com/)
-[![Cloudflare Tunnel](https://img.shields.io/badge/Cloudflare-Tunnel-orange)](https://www.cloudflare.com/products/tunnel/)
+[Ollama](https://ollama.com)
+[![Cloudflare Tunnel](images/cloudflare-tunnel-page.png)](https://www.cloudflare.com/products/tunnel/)
 [![Google Colab](https://img.shields.io/badge/Google%20Colab-F9AB00?logo=googlecolab)](https://colab.research.google.com/)
 
 Want to run powerful open-source AI models like Llama 3 or Phi-3 on a **free (or Pro) Google Colab instance** and access them from anywhere using your **own custom domain**? This guide is for you! We'll use Ollama for the AI models and Cloudflare Tunnel for secure, easy remote access.
