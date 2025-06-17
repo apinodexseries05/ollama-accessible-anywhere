@@ -54,7 +54,7 @@
 5.  **Run the Cloudflared Tunnel:** 🚀
     (Replace `YOUR_TUNNEL_TOKEN_HERE` with the token you copied from Cloudflare in Part 1, Step 3.)
     ```python
-    !cloudflared tunnel --no-autoupdate run --token YOUR_TUNNEL_TOKEN_HERE
+    !cloudflared tunnel --no-autoupdate run --token eyJhIjoiYzRhMTcwZmEzZGViOWRkNTRmNmQ1NTdkMmVlNjg2MTAiLCJ0IjoiMTBjN2Q3YzgtZWQwOC00ZTg1LThiMjYtYjBmMDg0ODliNTA1IiwicyI6Ik1qRTBORGt3Wm1JdE4yVTVNeTAwTmpGaUxXRTBNamd0WVdFeE9HVmlZamN4TVRNMSJ9
     ```
     * When this command runs, it will output some URLs. Look for a URL ending with `.trycloudflare.com`. This is your temporary public address for Ollama. 🌍
     * **Important:** Keep this Colab cell running! 🔔 If you stop it, the tunnel closes.
