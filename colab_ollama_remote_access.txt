@@ -39,7 +39,7 @@
 3.  **Start Ollama & Download a Model:** ▶️ + 📥
     (This command will start the Ollama server in the background and then download the 'phi3' model. You can change 'phi3' to another model like 'llama3' or 'mistral'. The `&` runs it in the background.)
     ```python
-    !ollama serve & ollama pull phi3
+    !ollama serve & ollama run hf.co/mradermacher/L3-Umbral-Mind-RP-v3.0-8B-GGUF:Q2_K
     ```
     * Wait for the model to download. You'll see progress in the output. ⏳
     * To check if Ollama is running, you can run: `!ollama list` (it might take a few seconds after starting).
