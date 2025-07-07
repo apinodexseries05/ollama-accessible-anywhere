@@ -246,48 +246,44 @@ class EnhancedOllamaSetup:
         print(f"{Colors.GREEN}🎉 Cloudflare tunnel started! Look for the public URL in the output above.{Colors.RESET}")
         return process
 
-
     def install_ollama_model(self, model_name=None):
-        """Install Ollama model with real-time progress"""
+        """Install Ollama model with a simulated progress bar to avoid excessive output."""
         if model_name is None:
             model_name = self.ollama_model
 
         self.print_step(5, 5, f"Installing Model: {model_name}", "🧠")
 
         print(f"{Colors.YELLOW}📥 Downloading model: {model_name}{Colors.RESET}")
+        print(f"{Colors.YELLOW}⏳ This may take several minutes. A simulated progress bar will be shown.{Colors.RESET}")
 
-        # Start the pull command
+        # Define messages for the simulated progress animation
+        progress_messages = [
+            "Initiating download...",
+            "Fetching model layers...",
+            "Downloading data (this can take a while)...",
+            "Decompressing model...",
+            "Verifying integrity...",
+            "Finalizing installation..."
+        ]
+
+        # Execute the command with a simulated progress bar.
+        # The duration is just for the animation; the script will wait as long as needed for the download to finish.
         command = f"ollama pull {model_name}"
-        process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, bufsize=1)
+        result = self.run_command_with_progress(
+            command,
+            progress_messages=progress_messages,
+            duration=300  # Simulate a 5-minute progress bar
+        )
 
-        progress_bar = ProgressBar(emoji_start="📥", emoji_end="🧠")
-
-        # Read output line by line
-        while True:
-            output = process.stdout.readline()
-            if output == '' and process.poll() is not None:
-                break
-            if output:
-                # Try to extract progress from ollama output
-                line = output.strip()
-                if 'pulling' in line.lower() or 'downloading' in line.lower():
-                    # Look for percentage in the output
-                    percentage_match = re.search(r'(\d+)%', line)
-                    if percentage_match:
-                        progress = int(percentage_match.group(1))
-                        progress_bar.update(progress, f"Downloading... {line[:60]}")
-                    else:
-                        progress_bar.update(50, f"Downloading... {line[:60]}")
-                elif 'verifying' in line.lower():
-                    progress_bar.update(90, "Verifying model...")
-                elif 'success' in line.lower() or process.poll() == 0:
-                    progress_bar.update(100, "Model ready!")
-
-        if process.returncode == 0:
+        # Check the result of the command after it completes
+        if result and result.returncode == 0:
             print(f"{Colors.GREEN}🎉 Model {model_name} installed successfully!{Colors.RESET}")
             return True
         else:
-            print(f"{Colors.RED}💥 Failed to install model {model_name}{Colors.RESET}")
+            print(f"{Colors.RED}💥 Failed to install model {model_name}.{Colors.RESET}")
+            if result:
+                # Show the error if the command failed, for easier debugging
+                print(f"{Colors.RED}Error details: {result.stderr[:500]}...{Colors.RESET}")
             return False
 
     def show_completion_summary(self, ollama_pid, tunnel_pid):
