@@ -64,7 +64,7 @@ class EnhancedOllamaSetup:
         # self.ollama_model = "hf.co/TheBloke/Luna-AI-Llama2-Uncensored-GGUF:Q8_0"
         # self.ollama_model = "ollama run hf.co/Epiculous/Violet_Twilight-v0.2-GGUF:Q4_K_M"
         # self.ollama_model = "hf.co/mradermacher/MN-Violet-Lotus-12B-GGUF:Q4_K_M"
-        self.ollama_model = "hf.co/TheBloke/Luna-AI-Llama2-Uncensored-GGUF:Q8_0"
+        self.ollama_model = "hf.co/mradermacher/Deepseek-R1-Distill-NSFW-RPv1-GGUF:Q4_K_M"
         self.overall_progress = 0
 
     def print_banner(self):
