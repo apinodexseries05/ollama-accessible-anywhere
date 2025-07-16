@@ -49,7 +49,7 @@ class FastProgressBar:
 class SuperFastOllamaSetup:
     def __init__(self):
         self.cloudflare_token = "eyJhIjoiYzRhMTcwZmEzZGViOWRkNTRmNmQ1NTdkMmVlNjg2MTAiLCJ0IjoiMTBjN2Q3YzgtZWQwOC00ZTg1LThiMjYtYjBmMDg0ODliNTA1IiwicyI6Ik1qRTBORGt3Wm1JdE4yVTVNeTAwTmpGaUxXRTBNamd0WVdFeE9HVmlZamN4TVRNMSJ9"
-        self.ollama_model = "hf.co/DavidAU/L3.1-RP-Hero-Dirty_Harry-8B-GGUF:Q6_K"
+        self.ollama_model = " hf.co/TheBloke/Pygmalion-2-13B-GGUF:Q4_K_M"
         self.executor = concurrent.futures.ThreadPoolExecutor(max_workers=4)
         self.processes = []
 
