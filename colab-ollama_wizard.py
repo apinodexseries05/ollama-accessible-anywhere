@@ -60,8 +60,7 @@ class ProgressBar:
 class EnhancedOllamaSetup:
     def __init__(self):
         self.cloudflare_token = "eyJhIjoiYzRhMTcwZmEzZGViOWRkNTRmNmQ1NTdkMmVlNjg2MTAiLCJ0IjoiMTBjN2Q3YzgtZWQwOC00ZTg1LThiMjYtYjBmMDg0ODliNTA1IiwicyI6Ik1qRTBORGt3Wm1JdE4yVTVNeTAwTmpGaUxXRTBNamd0WVdFeE9HVmlZamN4TVRNMSJ9"
-        self.ollama_model = "hf.co/TheDrummer/Gemmasutra-Mini-2B-v1-GGUF:Q8_0"
-        self.ollama_model = "hf.co/QuantFactory/DarkIdol-Llama-3.1-8B-Instruct-1.2-Uncensored-GGUF:Q4_K_M"
+        self.ollama_model = "hf.co/DavidAU/L3.1-RP-Hero-Dirty_Harry-8B-GGUF:Q6_K"
         # self.ollama_model = "hf.co/TheBloke/Luna-AI-Llama2-Uncensored-GGUF:Q8_0"
         # self.ollama_model = "ollama run hf.co/Epiculous/Violet_Twilight-v0.2-GGUF:Q4_K_M"
         # self.ollama_model = "hf.co/mradermacher/MN-Violet-Lotus-12B-GGUF:Q4_K_M"
